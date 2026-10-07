@@ -389,7 +389,6 @@ export default function App() {
               <span>Skill.dll</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono opacity-80 hidden sm:inline">[HARD & SOFT SKILLS]</span>
               <div className="flex items-center gap-1">
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Minimize"><Minus size={10} /></button>
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Maximize"><Square size={9} /></button>
@@ -474,7 +473,6 @@ export default function App() {
               <span>Projects.exe</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono opacity-80 hidden sm:inline">[PORTFOLIO DIRECTORY]</span>
               <div className="flex items-center gap-1">
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Minimize"><Minus size={10} /></button>
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Maximize"><Square size={9} /></button>
@@ -572,7 +570,6 @@ export default function App() {
               <span>Experience.exe</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono opacity-80 hidden sm:inline">[EXPERIENCE & CREDENTIALS]</span>
               <div className="flex items-center gap-1">
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Minimize"><Minus size={10} /></button>
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Maximize"><Square size={9} /></button>
@@ -758,7 +755,6 @@ export default function App() {
               <span>Contact.exe</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono opacity-80 hidden sm:inline">[DIRECT CHAT]</span>
               <div className="flex items-center gap-1">
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Minimize"><Minus size={10} /></button>
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Maximize"><Square size={9} /></button>
@@ -1114,17 +1110,16 @@ export default function App() {
           <div className="fixed bottom-10 left-1 z-50 bg-retro-gray retro-box-raised w-60 flex p-1 select-none">
             {/* Start Menu Vertical Side Banner */}
             <div className="bg-gradient-to-t from-retro-blue to-retro-blue-light text-white font-bold font-mono text-sm px-1.5 py-4 flex items-end justify-center">
-              <span className="[writing-mode:vertical-rl] rotate-180 tracking-widest text-xs">FalahOS 95</span>
+              <span className="[writing-mode:vertical-rl] rotate-180 tracking-widest text-xs">AjiOS 95</span>
             </div>
 
             {/* OS Info & System Details */}
             <div className="flex-1 p-3 text-xs font-mono space-y-2">
               <div className="border-b border-gray-400 pb-1.5">
                 <p className="font-bold text-sm text-blue-950 flex items-center gap-1.5">
-                  <span className="w-3 h-3 bg-gradient-to-tr from-red-600 via-yellow-400 to-blue-600 inline-block"></span>
-                  <span>FalahOS [v2026.1]</span>
+          
+                  <span>[v2026.1]</span>
                 </p>
-                <p className="text-[10px] text-gray-600 mt-0.5">Classic Desktop Edition</p>
               </div>
 
               <div className="space-y-1 text-[11px] text-gray-800">
@@ -1158,7 +1153,7 @@ export default function App() {
               isStartMenuOpen ? 'retro-box-sunken bg-gray-300' : ''
             }`}
           >
-            <div className="w-3.5 h-3.5 bg-gradient-to-tr from-red-600 via-yellow-400 to-blue-600"></div>
+            <div className=""></div> {/* tampat nari gambar*/}
             <span className="hidden sm:inline">Start</span>
           </button>
 

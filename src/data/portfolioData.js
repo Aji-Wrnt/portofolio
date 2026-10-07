@@ -7,7 +7,7 @@ export const profileData = {
   email: "falahajinata00@gmail.com",
   github: "https://github.com/Aji-Wrnt",       
   linkedin: "https://www.linkedin.com/in/falah-aji-wiranata-9416bb289", 
-  avatarUrl: "../../public/Profile/Provile.jpeg"
+  avatarUrl: "/Profile/Provile.jpeg"
 };
 
 export const skillsData = {
@@ -84,6 +84,37 @@ export const certificatesData = [
       "/Sertiv/SertifIBM.png"
     ],
     desc: "Earned IBM certification in Introduction to Cloud, mastering core cloud infrastructure, virtualization, and networking security controls. Skilled in cloud-native paradigms, including containerization, microservices, and elastic resource allocation."
+  },
+  { 
+    id: 4,
+    title: "Event Committee Member - Company Visit to Krom Bank", 
+    issuer: "HIMTI BINUS University (Bekasi Campus)", 
+    year: "2025",
+    images: [
+      "/Sertiv/CompanyVisitKrom1.png",
+      "/Sertiv/CompanyVisitKrom2.png"
+    ],
+    desc: "Contributed as a committee member for a company visit to Krom Bank hosted by HIMTI BINUS Bekasi. Supported event preparation and helped manage logistics and flow on-site during the event."
+  },
+  { 
+    id: 5,
+    title: "PBP Division Staff - TECHNO 2025", 
+    issuer: "HIMTI BINUS University", 
+    year: "2025",
+    images: [
+      "/Sertiv/SertifPBP.png"
+    ],
+    desc: "Served as PBP (Pengenalan Bahasa Pemrograman) Division Staff in TECHNO 2025 hosted by HIMTI BINUS University. Assisted in coordinating and executing programming orientation sessions for incoming Computer Science freshmen."
+  },
+  { 
+    id: 6,
+    title: "Staff of Registration Division - HILET 2025", 
+    issuer: "HIMTI BINUS University", 
+    year: "2025",
+    images: [
+      "/Sertiv/SertifHilet.png"
+    ],
+    desc: "Served as Registration Division Staff for HILET 2026, overseeing participant verification and onboarding operations. Optimized check-in efficiency and supported logistics to maintain a smooth event flow across the multi-day program."
   }
 ];
 
