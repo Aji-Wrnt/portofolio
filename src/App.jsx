@@ -1230,14 +1230,13 @@ export default function App() {
           <div className="fixed bottom-10 left-1 z-50 bg-retro-gray retro-box-raised w-60 flex p-1 select-none">
             {/* Start Menu Vertical Side Banner */}
             <div className="bg-gradient-to-t from-retro-blue to-retro-blue-light text-white font-bold font-mono text-sm px-1.5 py-4 flex items-end justify-center">
-              <span className="[writing-mode:vertical-rl] rotate-180 tracking-widest text-xs">AjiOS 95</span>
+              <span className="[writing-mode:vertical-rl] rotate-180 tracking-widest text-xs">CeritanyaOS 95</span>
             </div>
 
             {/* OS Info & System Details */}
             <div className="flex-1 p-3 text-xs font-mono space-y-2">
               <div className="border-b border-gray-400 pb-1.5">
                 <p className="font-bold text-sm text-blue-950 flex items-center gap-1.5">
-          
                   <span>[v2026.1]</span>
                 </p>
               </div>
@@ -1269,12 +1268,16 @@ export default function App() {
           {/* Start Button */}
           <button 
             onClick={() => setIsStartMenuOpen(!isStartMenuOpen)}
-            className={`retro-btn px-2.5 sm:px-3 py-1 font-bold text-xs flex items-center gap-1.5 flex-shrink-0 ${
+            className={`retro-btn px-2 sm:px-2.5 py-1 font-bold text-xs flex items-center gap-1.5 flex-shrink-0 ${
               isStartMenuOpen ? 'retro-box-sunken bg-gray-300' : ''
             }`}
           >
-            <div className=""></div> {/* tampat nari gambar*/}
-            <span className="hidden sm:inline">Start</span>
+            <img 
+              src="/favicon.png" 
+              alt="Start" 
+              className="w-4 h-4 object-contain flex-shrink-0 select-none" 
+            />
+            <span>Start</span>
           </button>
 
           {/* Running App Buttons in Taskbar */}
