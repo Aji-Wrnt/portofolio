@@ -3,7 +3,7 @@ import {
   Terminal, Folder, FileText, Send, 
   ExternalLink, Mail, Phone, Minus, Square, 
   Award, CheckCircle, ChevronDown, ChevronUp, 
-  Code2, User, ZoomIn, Image as ImageIcon
+  Code2, User, ZoomIn, Image as ImageIcon, Download
 } from 'lucide-react';
 import { profileData, skillsData, projectsData, certificatesData } from './data/portfolioData';
 
@@ -998,21 +998,28 @@ export default function App() {
 
       </main>
 
-      {/* ================= MODAL OVERLAY: CV VIEWER ================= */}
+      {/* ================= MODAL OVERLAY: CV VIEWER (PDF READER) ================= */}
       {isCvOpen && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-3">
-          <div className="bg-retro-gray retro-box-raised w-full max-w-2xl max-h-[88vh] flex flex-col p-1">
+        <div 
+          className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-2 sm:p-4"
+          onClick={() => setIsCvOpen(false)}
+        >
+          <div 
+            className="bg-retro-gray retro-box-raised w-full max-w-4xl h-[92vh] flex flex-col p-1 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Titlebar */}
             <div className="bg-gradient-to-r from-retro-blue to-retro-blue-light text-white px-2 py-1 flex items-center justify-between font-bold text-xs sm:text-sm select-none">
-              <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                <span className="truncate">Curriculum_Vitae_Document_Viewer.pdf</span>
+              <div className="flex items-center gap-2 truncate">
+                <FileText className="w-4 h-4 text-red-300 flex-shrink-0" />
+                <span className="truncate">AcrobatReader.exe - [CV.pdf]</span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 flex-shrink-0">
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Minimize"><Minus size={10} /></button>
                 <button className="retro-btn w-4 h-4 flex items-center justify-center text-[10px] text-black" aria-label="Maximize"><Square size={9} /></button>
                 <button 
                   onClick={() => setIsCvOpen(false)} 
-                  className="retro-btn w-4 h-4 flex items-center justify-center text-black font-bold text-xs"
+                  className="retro-btn w-4 h-4 flex items-center justify-center text-black font-bold text-xs active:translate-y-0.5"
                   aria-label="Close"
                 >
                   ✕
@@ -1020,42 +1027,55 @@ export default function App() {
               </div>
             </div>
 
-            <div className="p-4 sm:p-6 bg-white retro-box-sunken overflow-y-auto flex-1 font-serif text-xs sm:text-sm leading-relaxed space-y-4 m-2">
-              <div className="border-b-2 border-black pb-2 text-center">
-                <h2 className="text-xl font-bold uppercase tracking-wider">{profileData.name}</h2>
-                <p className="text-xs font-mono">{profileData.email} | {profileData.phone}</p>
-                <p className="text-xs italic font-sans">{profileData.title} • {profileData.specialization}</p>
+            {/* Retro Menu Bar & Tools */}
+            <div className="flex items-center justify-between px-2 py-0.5 text-[11px] font-mono border-b border-gray-400 bg-retro-gray text-gray-800 select-none flex-wrap gap-1">
+              <div className="flex items-center gap-3">
+                {/* <span className="hover:bg-retro-blue hover:text-white px-1 cursor-pointer">File</span>
+                <span className="hover:bg-retro-blue hover:text-white px-1 cursor-pointer">Edit</span>
+                <span className="hover:bg-retro-blue hover:text-white px-1 cursor-pointer">View</span>
+                <span className="hover:bg-retro-blue hover:text-white px-1 cursor-pointer">Window</span> */}
               </div>
-
-              <div>
-                <h3 className="font-bold text-xs border-b border-gray-400 mb-1 font-sans">SUMMARY</h3>
-                <p className="text-xs leading-relaxed">{profileData.about}</p>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-xs border-b border-gray-400 mb-1 font-sans">TECHNICAL PROFICIENCY</h3>
-                <p className="text-xs"><strong>Languages:</strong> C, Java, Python, JavaScript, SQL</p>
-                <p className="text-xs"><strong>Backend & Systems:</strong> Express.js, Docker, RESTful APIs, MySQL, RBAC Auth</p>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-xs border-b border-gray-400 mb-1 font-sans">KEY PROJECTS</h3>
-                {projectsData.map(p => (
-                  <div key={p.id} className="text-xs mb-2">
-                    <p className="font-bold font-sans">{p.title} ({p.languages.join(", ")})</p>
-                    <p className="text-gray-700">{p.description}</p>
-                  </div>
-                ))}
+              <div className="flex items-center gap-2">
+                <a
+                  href={profileData.cv || "/CV/CV.pdf"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="retro-btn px-2 py-0.5 text-[11px] font-mono font-bold flex items-center gap-1 text-black no-underline hover:bg-gray-200"
+                  title="Open PDF in a new browser tab"
+                >
+                  <ExternalLink size={12} />
+                  <span>Open in Tab</span>
+                </a>
+                <a
+                  href={profileData.cv || "/CV/CV.pdf"}
+                  download="CV_Falah_Aji_Wiranata.pdf"
+                  className="retro-btn px-2 py-0.5 text-[11px] font-mono font-bold flex items-center gap-1 text-black no-underline hover:bg-gray-200"
+                  title="Download PDF"
+                >
+                  <Download size={12} />
+                  <span>Download</span>
+                </a>
               </div>
             </div>
 
-            <div className="p-2 flex justify-end gap-2 bg-retro-gray border-t border-gray-400">
-              <button 
-                onClick={() => setIsCvOpen(false)}
-                className="retro-btn px-5 py-1 text-xs font-bold"
-              >
-                Close Viewer
-              </button>
+            {/* Embedded PDF Viewport */}
+            <div className="flex-1 bg-[#525659] retro-box-sunken m-1 relative overflow-hidden flex flex-col">
+              <iframe
+                src={`${profileData.cv || "/CV/CV.pdf"}#toolbar=1&navpanes=0`}
+                title="Curriculum Vitae PDF"
+                className="w-full h-full flex-1 border-0 bg-white"
+              />
+            </div>
+
+            {/* Retro Status Bar */}
+            <div className="px-2 py-1 flex items-center justify-between text-[11px] font-mono text-gray-700 bg-retro-gray border-t border-gray-400 select-none flex-wrap gap-2">
+              <div className="flex items-center gap-2 truncate">
+                {/* <span className="truncate">File: {profileData.cv || "/CV/CV.pdf"}</span>
+                <span className="text-gray-400 hidden sm:inline">|</span>
+                <span className="hidden sm:inline text-gray-600">Portable Document Format (PDF)</span> */}
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+              </div>
             </div>
           </div>
         </div>
