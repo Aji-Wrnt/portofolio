@@ -9,7 +9,7 @@ import { profileData, skillsData, projectsData, certificatesData } from './data/
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("ALL");
-  const [expandedProject, setExpandedProject] = useState(null);
+  const [expandedProjects, setExpandedProjects] = useState({});
   const [selectedCert, setSelectedCert] = useState(certificatesData[0] || null);
   const [activeCertImgIndex, setActiveCertImgIndex] = useState(0);
   const [isCvOpen, setIsCvOpen] = useState(false);
@@ -20,12 +20,51 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  // Helper untuk mengekstrak array gambar dari item sertifikat/pengalaman (kompatibel image & images)
+  // Helper untuk mengekstrak array gambar dari item sertifikat/pengalaman (kompatibel image & images, baik array maupun string tunggal)
   const getCertImages = (cert) => {
     if (!cert) return [];
     if (Array.isArray(cert.images) && cert.images.length > 0) return cert.images;
-    if (cert.image) return [cert.image];
+    if (Array.isArray(cert.image) && cert.image.length > 0) return cert.image;
+    if (typeof cert.images === 'string' && cert.images.trim()) return [cert.images];
+    if (typeof cert.image === 'string' && cert.image.trim()) return [cert.image];
     return [];
+  };
+
+  // Helper untuk mengekstrak array gambar dari item project (kompatibel image & images, baik array maupun string tunggal)
+  const getProjectImages = (project) => {
+    if (!project) return [];
+    if (Array.isArray(project.images) && project.images.length > 0) return project.images;
+    if (Array.isArray(project.image) && project.image.length > 0) return project.image;
+    if (typeof project.images === 'string' && project.images.trim()) return [project.images];
+    if (typeof project.image === 'string' && project.image.trim()) return [project.image];
+    return [];
+  };
+
+  // State untuk menyimpan index slide gambar aktif per project card (berdasarkan project.id)
+  const [projectImgIndices, setProjectImgIndices] = useState({});
+
+  // Helper navigasi gambar pada modal overlay ImageViewer.exe
+  const navigateViewer = (direction) => {
+    if (!previewImage || !previewImage.images || previewImage.images.length <= 1) return;
+    const total = previewImage.images.length;
+    const newIdx = direction === 'next' 
+      ? (previewImage.currentIndex + 1) % total 
+      : (previewImage.currentIndex - 1 + total) % total;
+    
+    setPreviewImage((prev) => ({
+      ...prev,
+      url: prev.images[newIdx],
+      currentIndex: newIdx,
+    }));
+
+    if (previewImage.projectId) {
+      setProjectImgIndices((prev) => ({
+        ...prev,
+        [previewImage.projectId]: newIdx,
+      }));
+    } else if (previewImage.isCert) {
+      setActiveCertImgIndex(newIdx);
+    }
   };
 
   // Retro features state: Active Section tracking, CRT overlay, Start menu
@@ -42,19 +81,9 @@ export default function App() {
         setIsStartMenuOpen(false);
       } else if (previewImage && previewImage.images && previewImage.images.length > 1) {
         if (e.key === 'ArrowLeft') {
-          const newIdx = (previewImage.currentIndex - 1 + previewImage.images.length) % previewImage.images.length;
-          setPreviewImage((prev) => ({
-            ...prev,
-            url: prev.images[newIdx],
-            currentIndex: newIdx,
-          }));
+          navigateViewer('prev');
         } else if (e.key === 'ArrowRight') {
-          const newIdx = (previewImage.currentIndex + 1) % previewImage.images.length;
-          setPreviewImage((prev) => ({
-            ...prev,
-            url: prev.images[newIdx],
-            currentIndex: newIdx,
-          }));
+          navigateViewer('next');
         }
       }
     };
@@ -483,38 +512,127 @@ export default function App() {
 
           <div className="p-4 sm:p-6 bg-retro-gray">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {projectsData.map((project) => (
-                <div key={project.id} className="bg-retro-gray retro-box-raised p-3 flex flex-col justify-between">
-                  <div>
-                    {/* Project Header Bar */}
-                    <div className="bg-retro-blue text-white px-2 py-1 text-xs font-bold font-mono mb-2 truncate">
-                      {project.title}
-                    </div>
+              {projectsData.map((project) => {
+                const projectImages = getProjectImages(project);
+                const currentImgIdx = projectImgIndices[project.id] || 0;
+                const safeImgIdx = projectImages.length > 0 ? (currentImgIdx % projectImages.length) : 0;
+                const currentProjectImg = projectImages[safeImgIdx];
 
-                    {/* Preview Gambar / Halaman Proyek (Dapat diklik untuk melihat ukuran asli tanpa potongan) */}
-                    {project.image && (
-                      <div 
-                        onClick={() => setPreviewImage({ 
-                          url: project.image, 
-                          title: `${project.title.replace(/\s+/g, '_')}.bmp`, 
-                          subtitle: `Project: ${project.title}` 
-                        })}
-                        className="bg-black/10 border border-black p-1 mb-2.5 cursor-pointer group/img relative overflow-hidden"
-                        title="Klik untuk melihat gambar ukuran asli tanpa terpotong"
-                      >
-                        <img 
-                          src={project.image} 
-                          alt={project.title} 
-                          className="w-full h-32 object-cover border border-gray-400 group-hover/img:brightness-105 transition-all"
-                        />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity text-white text-[11px] font-mono font-bold gap-1.5 backdrop-blur-[0.5px]">
-                          <ZoomIn size={14} />
-                          <span>View Full Size</span>
-                        </div>
+                return (
+                  <div key={project.id} className="bg-retro-gray retro-box-raised p-3 flex flex-col justify-between">
+                    <div>
+                      {/* Project Header Bar */}
+                      <div className="bg-retro-blue text-white px-2 py-1 text-xs font-bold font-mono mb-2 truncate">
+                        {project.title}
                       </div>
-                    )}
 
-                    {/* Tech Badges */}
+                      {/* Preview Gambar / Multi-Screenshot Slider */}
+                      {currentProjectImg && (
+                        <div className="mb-2.5">
+                          <div className="relative">
+                            <div 
+                              onClick={() => setPreviewImage({ 
+                                url: currentProjectImg, 
+                                title: `${project.title.replace(/\s+/g, '_')}${projectImages.length > 1 ? `_${safeImgIdx + 1}` : ''}.bmp`, 
+                                subtitle: `Project: ${project.title}`,
+                                images: projectImages,
+                                currentIndex: safeImgIdx,
+                                projectId: project.id
+                              })}
+                              className="bg-black/10 border border-black p-1 cursor-pointer group/img relative overflow-hidden"
+                              title="Klik untuk melihat gambar ukuran asli tanpa terpotong"
+                            >
+                              <img 
+                                src={currentProjectImg} 
+                                alt={`${project.title}${projectImages.length > 1 ? ` (${safeImgIdx + 1})` : ''}`} 
+                                className="w-full h-36 object-cover border border-gray-400 group-hover/img:brightness-105 transition-all"
+                              />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity text-white text-[11px] font-mono font-bold gap-1.5 backdrop-blur-[0.5px]">
+                                <ZoomIn size={14} />
+                                <span>View Full Size</span>
+                              </div>
+
+                              {/* Indikator Badge Jumlah Screenshot jika > 1 */}
+                              {projectImages.length > 1 && (
+                                <div className="absolute top-2 right-2 bg-black/85 text-yellow-300 text-[10px] font-mono font-bold px-1.5 py-0.5 border border-yellow-400/50 shadow select-none flex items-center gap-1 z-10">
+                                  <ImageIcon size={11} />
+                                  <span>{safeImgIdx + 1} / {projectImages.length}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Tombol Slide Prev / Next jika lebih dari 1 gambar */}
+                            {projectImages.length > 1 && (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setProjectImgIndices((prev) => ({
+                                      ...prev,
+                                      [project.id]: (safeImgIdx - 1 + projectImages.length) % projectImages.length
+                                    }));
+                                  }}
+                                  className="retro-btn absolute left-2 top-1/2 -translate-y-1/2 w-6 h-7 flex items-center justify-center font-bold text-xs text-black bg-[#d4d0c8] shadow-md z-20 hover:bg-white active:translate-y-[-46%]"
+                                  title="Gambar Sebelumnya"
+                                  aria-label="Previous Image"
+                                >
+                                  ◀
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setProjectImgIndices((prev) => ({
+                                      ...prev,
+                                      [project.id]: (safeImgIdx + 1) % projectImages.length
+                                    }));
+                                  }}
+                                  className="retro-btn absolute right-2 top-1/2 -translate-y-1/2 w-6 h-7 flex items-center justify-center font-bold text-xs text-black bg-[#d4d0c8] shadow-md z-20 hover:bg-white active:translate-y-[-46%]"
+                                  title="Gambar Selanjutnya"
+                                  aria-label="Next Image"
+                                >
+                                  ▶
+                                </button>
+                              </>
+                            )}
+                          </div>
+
+                          {/* Mini Thumbnail Filmstrip Bar jika lebih dari 1 gambar */}
+                          {projectImages.length > 1 && (
+                            <div className="flex items-center gap-1 mt-1.5 p-1 bg-retro-gray retro-box-sunken overflow-x-auto">
+                              <div className="flex gap-1">
+                                {projectImages.map((imgUrl, idx) => (
+                                  <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProjectImgIndices((prev) => ({
+                                        ...prev,
+                                        [project.id]: idx
+                                      }));
+                                    }}
+                                    className={`relative w-9 h-7 flex-shrink-0 border transition-all overflow-hidden ${
+                                      safeImgIdx === idx 
+                                        ? 'border-retro-blue ring-2 ring-blue-500 scale-105 z-10' 
+                                        : 'border-gray-500 opacity-60 hover:opacity-100'
+                                    }`}
+                                    title={`Buka gambar ke-${idx + 1}`}
+                                  >
+                                    <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                                    <span className="absolute bottom-0 right-0 bg-black/80 text-[7px] text-white px-0.5 font-mono leading-none">
+                                      #{idx + 1}
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Tech Badges */}
                     <div className="flex flex-wrap gap-1 mb-3">
                       {project.languages.map((tech, i) => (
                         <span key={i} className="text-[10px] bg-white border border-black px-1.5 py-0.5 font-mono">
@@ -527,15 +645,18 @@ export default function App() {
                   {/* Button More Details */}
                   <div>
                     <button
-                      onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
+                      onClick={() => setExpandedProjects((prev) => ({
+                        ...prev,
+                        [project.id]: !prev[project.id]
+                      }))}
                       className="retro-btn w-full py-1 text-xs font-bold flex items-center justify-center gap-1 mb-2"
                     >
-                      <span>{expandedProject === project.id ? "Hide Details" : "More Details"}</span>
-                      {expandedProject === project.id ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      <span>{expandedProjects[project.id] ? "Hide Details" : "More Details"}</span>
+                      {expandedProjects[project.id] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </button>
 
                     {/* Expandable Details Container */}
-                    {expandedProject === project.id && (
+                    {expandedProjects[project.id] && (
                       <div className="bg-[#fffffa] p-2.5 retro-box-sunken text-xs space-y-2.5 mb-2">
                         <p className="text-gray-800 leading-normal">{project.description}</p>
                         <a
@@ -554,7 +675,8 @@ export default function App() {
                     )}
                   </div>
                 </div>
-              ))}
+              );
+            })}
             </div>
           </div>
         </section>
@@ -634,7 +756,8 @@ export default function App() {
                           title: `${selectedCert.title.replace(/\s+/g, '_')}.bmp`, 
                           subtitle: `${selectedCert.title} • Verified by ${selectedCert.issuer} (${selectedCert.year})`,
                           images: certImages,
-                          currentIndex: activeCertImgIndex
+                          currentIndex: activeCertImgIndex,
+                          isCert: true
                         })}
                         className="border-2 border-black p-1 bg-[#1a1a1a] cursor-pointer group/cert relative overflow-hidden"
                         title="Klik untuk melihat foto/sertifikat ukuran asli tanpa terpotong"
@@ -729,7 +852,8 @@ export default function App() {
                         title: `${selectedCert.title.replace(/\s+/g, '_')}.bmp`, 
                         subtitle: `${selectedCert.title} • Verified by ${selectedCert.issuer} (${selectedCert.year})`,
                         images: certImages,
-                        currentIndex: activeCertImgIndex
+                        currentIndex: activeCertImgIndex,
+                        isCert: true
                       })}
                       className="retro-btn px-2.5 py-1 text-[11px] font-mono font-bold flex items-center gap-1.5 active:translate-y-0.5 hover:bg-gray-200 text-black"
                     >
@@ -771,7 +895,7 @@ export default function App() {
                 <div>
                   <h2 className="text-2xl font-bold font-mono tracking-tight text-red-700">Contact</h2>
                   <p className="text-xs text-gray-700 mt-2 leading-relaxed">
-                    Whether you have an open engineering role, a software project in mind, or want to discuss technical architecture, feel free to reach out.
+                    ------------------------------------------------------------------------------------
                   </p>
                 </div>
 
@@ -989,12 +1113,7 @@ export default function App() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      const newIdx = (previewImage.currentIndex - 1 + previewImage.images.length) % previewImage.images.length;
-                      setPreviewImage((prev) => ({
-                        ...prev,
-                        url: prev.images[newIdx],
-                        currentIndex: newIdx,
-                      }));
+                      navigateViewer('prev');
                     }}
                     className="retro-btn absolute left-3 top-1/2 -translate-y-1/2 px-3 py-2 font-bold text-sm bg-[#d4d0c8] shadow-lg opacity-80 hover:opacity-100 active:translate-y-[-46%]"
                     title="Foto Sebelumnya (Left Arrow)"
@@ -1005,12 +1124,7 @@ export default function App() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      const newIdx = (previewImage.currentIndex + 1) % previewImage.images.length;
-                      setPreviewImage((prev) => ({
-                        ...prev,
-                        url: prev.images[newIdx],
-                        currentIndex: newIdx,
-                      }));
+                      navigateViewer('next');
                     }}
                     className="retro-btn absolute right-3 top-1/2 -translate-y-1/2 px-3 py-2 font-bold text-sm bg-[#d4d0c8] shadow-lg opacity-80 hover:opacity-100 active:translate-y-[-46%]"
                     title="Foto Selanjutnya (Right Arrow)"
@@ -1036,28 +1150,14 @@ export default function App() {
                   <>
                     <button
                       type="button"
-                      onClick={() => {
-                        const newIdx = (previewImage.currentIndex - 1 + previewImage.images.length) % previewImage.images.length;
-                        setPreviewImage((prev) => ({
-                          ...prev,
-                          url: prev.images[newIdx],
-                          currentIndex: newIdx,
-                        }));
-                      }}
+                      onClick={() => navigateViewer('prev')}
                       className="retro-btn px-2.5 py-0.5 text-xs font-bold active:translate-y-0.5"
                     >
                       ◀ Prev
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
-                        const newIdx = (previewImage.currentIndex + 1) % previewImage.images.length;
-                        setPreviewImage((prev) => ({
-                          ...prev,
-                          url: prev.images[newIdx],
-                          currentIndex: newIdx,
-                        }));
-                      }}
+                      onClick={() => navigateViewer('next')}
                       className="retro-btn px-2.5 py-0.5 text-xs font-bold active:translate-y-0.5"
                     >
                       Next ▶

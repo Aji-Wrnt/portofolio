@@ -12,45 +12,74 @@ export const profileData = {
 
 export const skillsData = {
   "Programming": ["C", "Java", "Python", "JavaScript", "SQL", "HTML", "CSS"],
-  "Backend": ["Express.js", "Node.js", "RESTful API", "Microservices"],
+  "Backend": ["Express.js", "Node.js", "RESTful API", "Microservices", "Flask"],
   "Frontend": ["React.js", "Bootstrap", "HTML5 / Modern CSS", "Vite"],
   "Database": ["MySQL", "PostgreSQL"],
-  "Tools": ["Docker", "Git & GitHub", "Postman", "VS Code", "Android Studio", "Eclipse", "XAMPP", "Cisco Packet Tracer"],
+  "Tools": ["Docker", "Git & GitHub", "Postman", "VS Code", "pgAdmin 4", "Katalon Studio v11", "Android Studio", "Eclipse", "XAMPP", "Cisco Packet Tracer"],
   "Soft Skills": ["Problem Solving", "System Architecture Design", "Team Leadership", "Analytical Thinking", "Time Management"]
 };
 
 export const projectsData = [
   {
-    id: 1,
-    title: "Healthcare System Monitoring",
-    languages: ["React", "Express.js", "MySQL", "Docker"],
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&auto=format&fit=crop&q=80",
-    description: "Sistem monitoring kesehatan terpadu dengan autentikasi pengguna, logging catatan medis, serta containerized environment dengan Docker Compose.",
-    github: "https://github.com"
+    id: 1, //done
+    title: "Auth & Identity (IAM) Microservice",
+    languages: ["Node.js", "Express.js", "PostgreSQL", "JavaScript", "JWT (RS256)", "Zod", "Argon2"],
+    images: [
+      "/Project/AuthIdentity/RegistAcc.png",
+      "/Project/AuthIdentity/Login.png",
+      "/Project/AuthIdentity/QueryCheck.png",
+      "/Project/AuthIdentity/ResetPass.png",
+      "/Project/AuthIdentity/NewPass.png"
+    ],
+    description: "An autonomous Identity & Access Management (IAM) microservice built for an on-demand construction platform. It provides stateless authentication using asymmetric RS256 JWT, Argon2id password hashing, and single-use Refresh Token Rotation (RTR) backed by PostgreSQL.",
+    github: "https://github.com/Aji-Wrnt/auth_identity_service"
   },
   {
-    id: 2,
-    title: "Fake News Prediction API",
-    languages: ["Python", "FastAPI", "Docker", "Machine Learning"],
-    image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&auto=format&fit=crop&q=80",
-    description: "Sistem pendeteksi berita palsu menggunakan NLP dan model klasifikasi Machine Learning yang di-deploy dengan REST API berskala di dalam Docker container.",
-    github: "https://github.com"
+    id: 2, //don
+    title: "Fake News Detection & MLOps Pipeline",
+    languages: ["Python", "Scikit-Learn", "Flask", "Docker", "NLP", "Pandas"],
+    images: [
+      "/Project/FakeNewsDet/True.png",
+      "/Project/FakeNewsDet/Fake.png"
+    ],
+    description: "An end-to-end Machine Learning and NLP system that classifies news articles into real or fake using TF-IDF and Logistic Regression. Features a Flask REST API, an interactive web UI, and full containerization with Docker.",
+    github: "https://github.com/Aji-Wrnt/fake-news-detection-mlops"
   },
   {
-    id: 3,
-    title: "Construction Platform & Recipe Calculator",
-    languages: ["Express.js", "MySQL", "JavaScript"],
-    image: "https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=600&auto=format&fit=crop&q=80",
-    description: "Platform manajemen proyek konstruksi dengan fitur RBAC middleware, log harian mandor, dan kalkulator resep formula cat otomatis.",
-    github: "https://github.com"
+    id: 3, //don
+    title: "3Furniture Visualizer & Estimator Service",
+    languages: ["React", "Three.js", "WebRTC", "Node.js", "Express.js", "PostgreSQL", "Docker"],
+    images: [
+      "/Project/FurnitureVisual/ConfigurasiCustom.png",
+      "/Project/FurnitureVisual/QueryCheck.png",
+      "/Project/FurnitureVisual/etalase.jpeg",
+      "/Project/FurnitureVisual/runVisualMobile.jpeg"
+    ],
+    description: "An interactive 3D and WebAR parametric furniture configurator that allows users to customize physical dimensions and materials in real time, view models directly in their room via camera passthrough, and calculate automated manufacturing costs (BOM/RAB). Built with Three.js, React, Node.js, and PostgreSQL.",
+    github: "https://github.com/Aji-Wrnt/furniture-visualizer-estimator-service"
   },
   {
-    id: 4,
-    title: "Dynamic Fraud Detection (GNN)",
-    languages: ["Python", "PyTorch Geometric", "NetworkX"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80",
-    description: "Riset dan implementasi Graph Neural Networks untuk mendeteksi transaksi anomali dan fraud secara dinamis pada struktur jaringan.",
-    github: "https://github.com"
+    id: 4, //don
+    title: "AI Wall Paint Visualizer & Material Estimation Engine",
+    languages: ["FastAPI", "PyTorch", "FastSAM", "OpenCV", "Docker", "Flutter"],
+    images: [
+      "/Project/PaintWall/PostmanTest.png",
+      "/Project/PaintWall/ProcessVisual.jpeg",
+      "/Project/PaintWall/ResultVisual.jpeg"
+    ],
+    description: "An AI-powered computer vision microservice that simulates realistic wall repainting from room photos using FastSAM, preserving natural textures and lighting while automating paint requirements and labor cost estimation.",
+    github: "https://github.com/Aji-Wrnt/wall_paint_visualizer_service"
+  },
+  {
+    id: 5, // done
+    title: "Play Store Review Rating Benchmark (NLP & Deep Learning)",
+    languages: ["Python", "TensorFlow", "Scikit-Learn", "NLTK", "Word2Vec", "SMOTE"],
+    images: [
+      "/Project/NlpSentimen/WithoutImbalance.png",
+      "/Project/NlpSentimen/ImbalanceResult.png"
+    ],
+    description: "An end-to-end NLP and machine learning pipeline that predicts Google Play Store user ratings (1-5 stars) from text reviews. It benchmarks TF-IDF vs. Word2Vec embeddings across traditional ML models (Logistic Regression, Random Forest) and Deep Learning (LSTM), complete with SMOTE class imbalance mitigation.",
+    github: "https://github.com/Aji-Wrnt/nlp_sentiment_rating_benchmark"
   }
 ];
 
