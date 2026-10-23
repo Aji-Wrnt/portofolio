@@ -8,7 +8,7 @@ export const profileData = {
   github: "https://github.com/Aji-Wrnt",       
   linkedin: "https://www.linkedin.com/in/falah-aji-wiranata-9416bb289", 
   avatarUrl: "/Profile/Provile.jpeg",
-  cv: "/CV/CV.pdf"
+  cv: ""
 };
 
 export const skillsData = {
