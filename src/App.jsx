@@ -458,9 +458,9 @@ export default function App() {
                         <div key={index} className="flex items-center justify-between p-2 border border-gray-300 bg-white">
                           <span className="text-xs font-mono font-bold text-gray-800">{skill}</span>
                           <div className="flex gap-0.5">
-                            {[1, 2, 3, 4, 5].map((seg) => (
+                            {/* {[1, 2, 3, 4, 5].map((seg) => (
                               <div key={seg} className="w-2.5 h-2.5 bg-retro-blue border border-black/40"></div>
-                            ))}
+                            ))} */}
                           </div>
                         </div>
                       ))}
@@ -478,9 +478,9 @@ export default function App() {
                       <div key={index} className="flex items-center justify-between p-2 border border-gray-300 bg-white">
                         <span className="text-xs font-mono font-bold text-gray-800">{skill}</span>
                         <div className="flex gap-0.5">
-                          {[1, 2, 3, 4, 5].map((seg) => (
+                          {/* {[1, 2, 3, 4, 5].map((seg) => (
                             <div key={seg} className="w-2.5 h-2.5 bg-retro-blue border border-black/40"></div>
-                          ))}
+                          ))} */}
                         </div>
                       </div>
                     ))}
@@ -1232,6 +1232,7 @@ export default function App() {
             <div className="bg-gradient-to-t from-retro-blue to-retro-blue-light text-white font-bold font-mono text-sm px-1.5 py-4 flex items-end justify-center">
               <span className="[writing-mode:vertical-rl] rotate-180 tracking-widest text-xs">CeritanyaOS 95</span>
             </div>
+
 
             {/* OS Info & System Details */}
             <div className="flex-1 p-3 text-xs font-mono space-y-2">
